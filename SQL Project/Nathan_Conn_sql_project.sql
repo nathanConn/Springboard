@@ -106,7 +106,6 @@ GROUP BY member
 */
 
 
-
 /* Q8: How can you produce a list of bookings on the day of 2012-09-14 which
 will cost the member (or guest) more than $30? Remember that guests have
 different costs to members (the listed costs are per half-hour 'slot'), and
@@ -140,3 +139,16 @@ ORDER BY 3 DESC, 1
 /* Q10: Produce a list of facilities with a total revenue less than 1000.
 The output of facility name and total revenue, sorted by revenue. Remember
 that there's a different cost for guests and members! */
+
+/* A10:
+SELECT f.name AS Facility, SUM( 
+CASE WHEN b.memid =0
+THEN b.slots * 0.5 * f.guestcost
+ELSE b.slots * f.membercost
+END ) AS Revenue
+FROM country_club.Facilities f
+JOIN country_club.Bookings b ON f.facid = b.facid
+GROUP BY f.name
+HAVING Revenue <1000
+ORDER BY Revenue DESC
+*/
