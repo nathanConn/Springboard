@@ -114,6 +114,25 @@ the guest user's ID is always 0. Include in your output the name of the
 facility, the name of the member formatted as a single column, and the cost.
 Order by descending cost, and do not use any subqueries. */
 
+/* A8:
+SELECT CASE WHEN m.memid =0
+THEN  "Guest"
+ELSE CONCAT( m.surname,  ', ', m.firstname ) 
+END AS Member_name, f.name AS Facility, 
+CASE WHEN m.memid =0
+THEN b.slots * 0.5 * f.guestcost
+ELSE b.slots * f.membercost
+END AS Cost
+FROM country_club.Bookings b
+INNER JOIN country_club.Members m ON b.memid = m.memid
+INNER JOIN country_club.Facilities f ON b.facid = f.facid
+WHERE  `starttime` 
+BETWEEN  '2012-09-14 0:00:01'
+AND  '2012-09-14 23:59:59'
+HAVING Cost > 30
+ORDER BY 3 DESC, 1
+*/
+
 
 /* Q9: This time, produce the same result as in Q8, but using a subquery. */
 
